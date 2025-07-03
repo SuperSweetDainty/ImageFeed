@@ -89,7 +89,7 @@
                             <constraint firstAttribute="bottom" secondItem="ftk-gC-B5s" secondAttribute="bottom" id="zd6-9V-Jgd"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="TabEditorialActive" selectedImage="TabEditorialActive" id="ueK-v1-ZJf"/>
+                    <tabBarItem key="tabBarItem" title="" image="TabEditorialActive" id="ueK-v1-ZJf"/>
                     <connections>
                         <outlet property="tableView" destination="ftk-gC-B5s" id="f3Y-gc-XvX"/>
                         <segue destination="0Zi-rw-0Q3" kind="presentation" identifier="ShowSingleImage" id="BBZ-gH-S3B"/>
@@ -109,7 +109,7 @@
                         <viewLayoutGuide key="safeArea" id="KTg-5i-vUw"/>
                         <color key="backgroundColor" name="YP Black"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="TabProfileActive" selectedImage="TabProfileActive" id="dsI-ms-fWD"/>
+                    <tabBarItem key="tabBarItem" title="" image="TabProfileActive" id="dsI-ms-fWD"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qCV-re-wA9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
