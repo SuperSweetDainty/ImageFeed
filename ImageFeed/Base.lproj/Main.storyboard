@@ -89,8 +89,7 @@
                             <constraint firstAttribute="bottom" secondItem="ftk-gC-B5s" secondAttribute="bottom" id="zd6-9V-Jgd"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="TabEditorialActive" id="ueK-v1-ZJf"/>
-                    <navigationItem key="navigationItem" id="tFA-Zh-nl1"/>
+                    <tabBarItem key="tabBarItem" title="" image="TabEditorialActive" selectedImage="TabEditorialActive" id="ueK-v1-ZJf"/>
                     <connections>
                         <outlet property="tableView" destination="ftk-gC-B5s" id="f3Y-gc-XvX"/>
                         <segue destination="0Zi-rw-0Q3" kind="presentation" identifier="ShowSingleImage" id="BBZ-gH-S3B"/>
@@ -110,7 +109,7 @@
                         <viewLayoutGuide key="safeArea" id="KTg-5i-vUw"/>
                         <color key="backgroundColor" name="YP Black"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="TabProfileActive" id="dsI-ms-fWD"/>
+                    <tabBarItem key="tabBarItem" title="" image="TabProfileActive" selectedImage="TabProfileActive" id="dsI-ms-fWD"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qCV-re-wA9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -138,7 +137,7 @@
                                     <outlet property="delegate" destination="0Zi-rw-0Q3" id="SAb-Z7-4sT"/>
                                 </connections>
                             </scrollView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a1z-o0-kdY">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a1z-o0-kdY" userLabel="Back Button">
                                 <rect key="frame" x="8" y="40" width="48" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="WRh-6X-Kvd"/>
@@ -176,7 +175,6 @@
                             <constraint firstItem="5D0-iJ-P5Q" firstAttribute="top" secondItem="a1z-o0-kdY" secondAttribute="top" constant="8" id="w3x-d9-NUZ"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="LKr-8H-adI"/>
                     <connections>
                         <outlet property="imageView" destination="4tT-j6-d3N" id="QlA-6j-gxj"/>
                         <outlet property="scrollView" destination="g37-dH-rTe" id="Xxo-FD-emF"/>
