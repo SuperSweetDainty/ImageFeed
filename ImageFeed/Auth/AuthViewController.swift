@@ -4,7 +4,7 @@ final class AuthViewController: UIViewController {
     private let showWebViewSegueIdentifier = "ShowWebView"
     
     weak var delegate: AuthViewControllerDelegate?
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -36,41 +36,28 @@ final class AuthViewController: UIViewController {
 
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-
+        
         let authTokenFetched: (Result<String, Error>) -> Void = { result in
             switch result {
             case .success(let token):
-
                 OAuth2TokenStorage.shared.token = token
-                self.switchToTabBarController()
-
+                DispatchQueue.main.async {
+                    self.delegate?.didAuthenticate(self)
+                }
             case .failure(let error):
-                print("Ошибка: \(error)")
+                print("Ошибка при получении токена: \(error)")
             }
         }
         
         OAuth2Service.shared.fetchOAuthToken(code: code, completion: authTokenFetched)
         
     }
-
+    
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
         vc.dismiss(animated: true)
     }
-    
-    private func switchToTabBarController() {
-        DispatchQueue.main.async {
-            guard let window = UIApplication.shared.windows.first else
-            {
-                assertionFailure("Invalid Configuration")
-                return
-            }
-            let tabBarController = UIStoryboard(name: "Main", bundle: .main)
-                .instantiateViewController(withIdentifier: "TabBarViewController")
-            window.rootViewController = tabBarController
-        }
+}
+    protocol AuthViewControllerDelegate: AnyObject {
+        func didAuthenticate(_ vc: AuthViewController)
     }
-}
 
-protocol AuthViewControllerDelegate: AnyObject {
-    func didAuthenticate(_ vc: AuthViewController)
-}
