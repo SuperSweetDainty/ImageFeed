@@ -23,13 +23,14 @@ final class SplashViewController: UIViewController {
     }
 
     private func switchToTabBarController() {
-        guard let window = UIApplication.shared.windows.first else
-        {
-            assertionFailure("Invalid Configuration")
+        guard let window = UIApplication.shared.windows.first else {
+            assertionFailure("Invalid window configuration")
             return
         }
+        
         let tabBarController = UIStoryboard(name: "Main", bundle: .main)
             .instantiateViewController(withIdentifier: "TabBarViewController")
+           
         window.rootViewController = tabBarController
     }
     
@@ -50,10 +51,16 @@ extension SplashViewController {
 }
 
 extension SplashViewController: AuthViewControllerDelegate {
+    
     func didAuthenticate(_ vc: AuthViewController) {
-        
+        print("didAuthenticate called") // Добавьте лог
+        vc.dismiss(animated: true) { [weak self] in
+            print("Dismiss completed") // Добавьте лог
+            self?.switchToTabBarController()
+        }
     }
     
+
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
         dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
