@@ -28,48 +28,6 @@ final class OAuth2Service {
         return request
     }
     
-//    func fetchOAuthToken(
-//        code: String,
-//        completion: @escaping (Result<String, Error>) -> Void
-//    ) {
-//        guard task == nil else { return }
-//        
-//        guard let request = makeOAuthTokenRequest(code: code) else {
-//            completion(.failure(NetworkError.invalidRequest))
-//            return
-//        }
-//        
-//        let task = URLSession.shared.data(for: request) { [weak self] result in
-//            defer { self?.task = nil }
-//            
-//            switch result {
-//            case .success(let data):
-//                do {
-//                    let response = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
-//                    
-//                    // Компактная проверка с guard
-//                    guard !response.accessToken.isEmpty else {
-//                        throw NetworkError.emptyToken
-//                    }
-//                    
-//                    OAuth2TokenStorage.shared.token = response.accessToken
-//                    completion(.success(response.accessToken))
-//                    
-//                } catch let error as NetworkError {
-//                    completion(.failure(error))
-//                } catch {
-//                    completion(.failure(NetworkError.decodingError(error)))
-//                }
-//                
-//            case .failure(let error):
-//                completion(.failure(error))
-//            }
-//        }
-//        
-//        self.task = task
-//        task.resume()
-//    }
-    
     func fetchOAuthToken(
         code: String,
         completion: @escaping (Result<String, Error>) -> Void
@@ -92,7 +50,6 @@ final class OAuth2Service {
                 }
             }
             
-            // 1. Проверка ошибки сети
             if let error = error {
                 print("[OAuth2Service] Network error: \(error.localizedDescription)")
                 DispatchQueue.main.async {
@@ -101,7 +58,6 @@ final class OAuth2Service {
                 return
             }
             
-            // 2. Проверка наличия данных
             guard let data = data else {
                 print("[OAuth2Service] Error: No data in response")
                 DispatchQueue.main.async {
@@ -110,7 +66,6 @@ final class OAuth2Service {
                 return
             }
             
-            // 3. Проверка HTTP-статуса
             guard let httpResponse = response as? HTTPURLResponse else {
                 print("[OAuth2Service] Error: Not a HTTP response")
                 DispatchQueue.main.async {
@@ -126,8 +81,7 @@ final class OAuth2Service {
                 }
                 return
             }
-            
-            // 4. Декодирование с вашей структурой
+
             do {
                 let decoder = JSONDecoder()
                 let response = try decoder.decode(OAuthTokenResponseBody.self, from: data)
@@ -143,7 +97,7 @@ final class OAuth2Service {
                 DispatchQueue.main.async {
                     OAuth2TokenStorage.shared.token = response.accessToken
                     completion(.success(response.accessToken))
-                    print("[OAuth2Service] Token received: \(response.accessToken.prefix(4))...") // Логируем только начало токена
+                    print("[OAuth2Service] Token received: \(response.accessToken.prefix(4))...")
                 }
             } catch {
                 print("[OAuth2Service] Decoding error: \(error)")

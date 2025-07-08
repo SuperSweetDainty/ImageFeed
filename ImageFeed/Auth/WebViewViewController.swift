@@ -94,7 +94,6 @@ extension WebViewViewController: WKNavigationDelegate {
     private func code(from navigationAction: WKNavigationAction) -> String? {
         guard let url = navigationAction.request.url else { return nil }
         
-        // Новый более надежный способ извлечения кода
         if url.absoluteString.hasPrefix(Constants.redirectURI) {
             return URLComponents(string: url.absoluteString)?
                 .queryItems?
@@ -104,26 +103,4 @@ extension WebViewViewController: WKNavigationDelegate {
         return nil
     }
 }
-
-//private func makeOAuthTokenRequest(code: String) -> URLRequest? {
-//    guard var urlComponents = URLComponents(string: "https://unsplash.com/oauth/token") else {
-//        return nil
-//    }
-//
-//    urlComponents.queryItems = [
-//        URLQueryItem(name: "client_id", value: Constants.accessKey),
-//        URLQueryItem(name: "client_secret", value: Constants.secretKey),
-//        URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
-//        URLQueryItem(name: "code", value: code),
-//        URLQueryItem(name: "grant_type", value: "authorization_code"),
-//    ]
-//
-//    guard let authTokenUrl = urlComponents.url else {
-//        return nil
-//    }
-//
-//    var request = URLRequest(url: authTokenUrl)
-//    request.httpMethod = "POST"
-//    return request
-//}
 

@@ -5,13 +5,10 @@ final class SplashViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        //UserDefaults.standard.removeObject(forKey: "accessToken")
 
         if OAuth2TokenStorage.shared.token != nil {
             switchToTabBarController()
         } else {
-            // Show Auth Screen
             performSegue(withIdentifier: showAuthenticationScreenSegueIdentifier, sender: nil)
         }
     }
