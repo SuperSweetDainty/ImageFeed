@@ -1,7 +1,12 @@
 import UIKit
 
+protocol AuthViewControllerDelegate: AnyObject {
+    func didAuthenticate(_ vc: AuthViewController)
+}
+
 final class AuthViewController: UIViewController {
     private let showWebViewSegueIdentifier = "ShowWebView"
+    private let oauth2Service = OAuth2Service.shared
     
     weak var delegate: AuthViewControllerDelegate?
     
@@ -28,7 +33,6 @@ final class AuthViewController: UIViewController {
     private func configureBackButton() {
         navigationController?.navigationBar.backIndicatorImage = UIImage(named: "BackButtonBlack")
         navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "BackButtonBlack")
-        navigationController?.navigationBar.tintColor = UIColor(named: "YP Black")
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem?.tintColor = UIColor(named: "YP Black")
     }
@@ -36,28 +40,29 @@ final class AuthViewController: UIViewController {
 
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        
-        let authTokenFetched: (Result<String, Error>) -> Void = { result in
+        vc.dismiss(animated: true)
+        fetchOAuthToken(code) { [weak self] result in
+            guard let self = self else { return }
+            
             switch result {
-            case .success(let token):
-                OAuth2TokenStorage.shared.token = token
-                DispatchQueue.main.async {
-                    self.delegate?.didAuthenticate(self)
-                }
-            case .failure(let error):
-                print("Ошибка при получении токена: \(error)")
+            case .success:
+                self.delegate?.didAuthenticate(self)
+            case .failure:
+                // TODO [Sprint 11] Добавьте обработку ошибки
+                break
             }
         }
-        
-        OAuth2Service.shared.fetchOAuthToken(code: code, completion: authTokenFetched)
-        
     }
-    
+
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
         vc.dismiss(animated: true)
     }
 }
-    protocol AuthViewControllerDelegate: AnyObject {
-        func didAuthenticate(_ vc: AuthViewController)
-    }
 
+extension AuthViewController {
+    private func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
+        oauth2Service.fetchOAuthToken(code) { result in
+            completion(result)
+        }
+    }
+}

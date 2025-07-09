@@ -69,9 +69,9 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
-                                            <outlet property="LikeImageView" destination="fIE-q6-B2o" id="9Hy-xZ-Z2z"/>
-                                            <outlet property="cellImageView" destination="nKa-LA-Ff4" id="g9e-qY-ppi"/>
-                                            <outlet property="dateLabel" destination="nMl-Jf-hGh" id="buO-dp-Eyi"/>
+                                            <outlet property="cellImage" destination="nKa-LA-Ff4" id="OUs-3W-O57"/>
+                                            <outlet property="dateLabel" destination="nMl-Jf-hGh" id="oYo-H1-qbF"/>
+                                            <outlet property="likeButton" destination="fIE-q6-B2o" id="00W-HE-rTa"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -171,20 +171,20 @@
         <!--Splash View Controller-->
         <scene sceneID="C1W-mh-qjg">
             <objects>
-                <viewController id="24r-WF-CcX" customClass="SplashViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SplashViewController" id="24r-WF-CcX" customClass="SplashViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="64t-vD-1NU">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SplashScreenLogo" translatesAutoresizingMaskIntoConstraints="NO" id="9MP-GY-49d">
-                                <rect key="frame" x="152.5" y="391.5" width="109" height="113"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SplashScreenLogo" translatesAutoresizingMaskIntoConstraints="NO" id="La9-9q-2CE">
+                                <rect key="frame" x="170.5" y="410.5" width="73" height="75.5"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="W9w-1J-scd"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
-                            <constraint firstItem="9MP-GY-49d" firstAttribute="centerY" secondItem="64t-vD-1NU" secondAttribute="centerY" id="P3h-xP-Ypj"/>
-                            <constraint firstItem="9MP-GY-49d" firstAttribute="centerX" secondItem="64t-vD-1NU" secondAttribute="centerX" id="Wru-el-SDm"/>
+                            <constraint firstItem="La9-9q-2CE" firstAttribute="centerY" secondItem="64t-vD-1NU" secondAttribute="centerY" id="7yq-se-SPc"/>
+                            <constraint firstItem="La9-9q-2CE" firstAttribute="centerX" secondItem="64t-vD-1NU" secondAttribute="centerX" id="hMw-0c-yDO"/>
                         </constraints>
                     </view>
                     <connections>
@@ -256,8 +256,8 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="imageView" destination="4tT-j6-d3N" id="QlA-6j-gxj"/>
-                        <outlet property="scrollView" destination="g37-dH-rTe" id="Xxo-FD-emF"/>
+                        <outlet property="imageView" destination="4tT-j6-d3N" id="OEC-wG-H2L"/>
+                        <outlet property="scrollView" destination="g37-dH-rTe" id="krY-Ma-4fa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wym-YD-zwN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -339,13 +339,13 @@
                     </view>
                     <navigationItem key="navigationItem" id="CTJ-Ke-okz"/>
                     <connections>
-                        <outlet property="progressView" destination="8lM-fY-qSf" id="hkY-kF-SE6"/>
-                        <outlet property="webView" destination="bpc-NW-Xpg" id="ro0-Wl-4CR"/>
+                        <outlet property="progressView" destination="8lM-fY-qSf" id="vSG-pZ-sJa"/>
+                        <outlet property="webView" destination="bpc-NW-Xpg" id="p1F-BN-it9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DxC-Ke-azW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4525" y="-765"/>
+            <point key="canvasLocation" x="4524.6376811594209" y="-765.40178571428567"/>
         </scene>
     </scenes>
     <resources>
@@ -354,7 +354,7 @@
         <image name="BackButtonWhite" width="24" height="24"/>
         <image name="Like" width="63" height="63"/>
         <image name="ShareButton" width="50" height="50"/>
-        <image name="SplashScreenLogo" width="109" height="113"/>
+        <image name="SplashScreenLogo" width="73" height="75.5"/>
         <image name="TabEditorialActive" width="30" height="30"/>
         <image name="TabProfileActive" width="30" height="30"/>
         <namedColor name="YP Black">

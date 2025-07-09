@@ -3,7 +3,7 @@ import UIKit
 final class ImagesListCell: UITableViewCell {
     static let reuseIdentifier = "ImagesListCell"
     
-    @IBOutlet weak var likeImageView: UIButton!
-    @IBOutlet weak var cellImageView: UIImageView!
-    @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet var cellImage: UIImageView!
+    @IBOutlet var likeButton: UIButton!
+    @IBOutlet var dateLabel: UILabel!
 }
