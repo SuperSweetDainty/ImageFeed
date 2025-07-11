@@ -1,6 +1,9 @@
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
+    
+    private var profileImageServiceObserver: NSObjectProtocol?
     
     private let profileImage = UIImageView()
     private let nameLabel = UILabel()
@@ -18,11 +21,64 @@ final class ProfileViewController: UIViewController {
         setupNameLabel()
         setupLoginLabel()
         setupDescriptionLabel()
+        
+        profileImageServiceObserver = NotificationCenter.default    // 2
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification, // 3
+                object: nil,                                        // 4
+                queue: .main                                        // 5
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateAvatar()                                 // 6
+            }
+        updateAvatar()                                              // 7
+        
+        if let profile = ProfileService.shared.profile {
+            updateProfileDetails(profile: profile)
+        } else {
+            print("[ProfileViewController]: Profile not found")
+        }
+    }
+    
+    private func updateAvatar() {
+        guard
+            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let url = URL(string: profileImageURL)
+        else {
+            print("[ProfileViewController]: Error: Invalid avatar URL")
+            return
+        }
+        
+        let processor = RoundCornerImageProcessor(cornerRadius: 35)
+        
+        profileImage.kf.indicatorType = .activity
+        profileImage.kf.setImage(
+            with: url,
+            placeholder: UIImage(named: "UserPicture"),
+            options: [
+                .processor(processor),
+                .cacheOriginalImage
+            ]) { result in
+                switch result {
+                case .success:
+                    print("[ProfileViewController]: Avatar uploaded successfully")
+                case .failure(let error):
+                    print("[ProfileViewController]: Avatar loading error - \(error.localizedDescription)")
+                }
+            }
+    }
+    
+    
+    
+    private func updateProfileDetails(profile: Profile) {
+        nameLabel.text = profile.name
+        loginLabel.text = profile.loginName
+        descriptionLabel.text = profile.bio
     }
     
     private func setupProfileImage() {
         profileImage.translatesAutoresizingMaskIntoConstraints = false
-        profileImage.image = UIImage(named: "Avatar")
+        profileImage.image = UIImage(named: "UserPicture")
         profileImage.contentMode = .scaleAspectFill
         profileImage.layer.cornerRadius = 35
         profileImage.clipsToBounds = true

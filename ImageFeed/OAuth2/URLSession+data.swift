@@ -16,17 +16,17 @@ extension URLSession {
         let task = dataTask(with: request) { data, response, error in
             if let error = error {
                 let nsError = error as NSError
-                var errorMessage = "Network request failed: \(nsError.domain) - \(nsError.code)"
+                var errorMessage = "[URLSession+data]: Network request failed: \(nsError.domain) - \(nsError.code)"
                 
                 if let url = request.url {
-                    errorMessage += " for URL: \(url.absoluteString)"
+                    errorMessage += "[URLSession+data]: Request for URL: \(url.absoluteString)"
                 }
                 
                 if nsError.code == NSURLErrorCancelled {
-                    errorMessage += " (Request was cancelled)"
+                    errorMessage += "[URLSession+data]: Request was cancelled"
                 }
                 
-                print("[Network Error]: \(errorMessage)")
+                print("[URLSession+data]: Network error\(errorMessage)")
                 DispatchQueue.main.async {
                     completion(.failure(NetworkError.urlRequestError(error)))
                 }
@@ -34,7 +34,7 @@ extension URLSession {
             }
             
             guard let httpResponse = response as? HTTPURLResponse else {
-                print("[Network Error]: Received invalid response type")
+                print("[URLSession+data]: Received invalid response type")
                 DispatchQueue.main.async {
                     completion(.failure(NetworkError.urlSessionError))
                 }
@@ -43,17 +43,17 @@ extension URLSession {
             
             guard (200...299).contains(httpResponse.statusCode) else {
                 let statusCode = httpResponse.statusCode
-                var errorMessage = "Server returned HTTP \(statusCode)"
+                var errorMessage = "[URLSession+data]: Server returned HTTP \(statusCode)"
                 
                 if let url = request.url {
-                    errorMessage += " for URL: \(url.absoluteString)"
+                    errorMessage += "[URLSession+data]: Request for URL: \(url.absoluteString)"
                 }
                 
                 if let data = data, let responseBody = String(data: data, encoding: .utf8) {
                     errorMessage += "\nResponse body: \(responseBody)"
                 }
                 
-                print("[Network Error]: \(errorMessage)")
+                print("[URLSession+data]: Network Error \(errorMessage)")
                 DispatchQueue.main.async {
                     completion(.failure(NetworkError.httpStatusCode(statusCode)))
                 }
@@ -61,7 +61,7 @@ extension URLSession {
             }
             
             guard let data = data else {
-                print("[Network Error]: Received empty data for \(request.url?.absoluteString ?? "unknown URL")")
+                print("[URLSession+data]: Network error received empty data for \(request.url?.absoluteString ?? "unknown URL")")
                 DispatchQueue.main.async {
                     completion(.failure(NetworkError.urlSessionError))
                 }
@@ -74,6 +74,30 @@ extension URLSession {
         }
         
         task.resume()
+        return task
+    }
+    
+    func objectTask<T: Decodable>(
+        for request: URLRequest,
+        completion: @escaping (Result<T, Error>) -> Void
+    ) -> URLSessionTask {
+        let task = self.data(for: request) { result in
+            switch result {
+            case .success(let data):
+                do {
+                    let decoder = JSONDecoder()
+                    let object = try decoder.decode(T.self, from: data)
+                    completion(.success(object))
+                } catch {
+                    let responseString = String(data: data, encoding: .utf8) ?? "nil"
+                    print("[URLSession+data]: objectTask decoding error - \(error.localizedDescription), response: \(responseString)")
+                    completion(.failure(NetworkError.decodingError(error)))
+                }
+            case .failure(let error):
+                print("[URLSession+data]: objectTask failure - \(error.localizedDescription)")
+                completion(.failure(error))
+            }
+        }
         return task
     }
 }
