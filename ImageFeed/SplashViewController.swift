@@ -60,8 +60,9 @@ final class SplashViewController: UIViewController {
                     ProfileImageService.shared.fetchProfileImageURL(username: profile.username) { _ in }
                     self.switchToMainScreen()
                 case .failure:
-                    // TODO: показать алерт об ошибке
-                    break
+                    let alert = UIAlertController(title: "Ошибка", message: "Не удалось загрузить профиль", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Ок", style: .default))
+                    self.present(alert, animated: true)
                 }
             }
         }

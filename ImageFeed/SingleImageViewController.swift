@@ -1,6 +1,8 @@
 import UIKit
+import Kingfisher
 
 final class SingleImageViewController: UIViewController {
+    var imageURL: URL?
     var image: UIImage? {
         didSet {
             guard isViewLoaded, let image else { return }
@@ -16,13 +18,32 @@ final class SingleImageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        scrollView.delegate = self
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
         
-        guard let image else { return }
-        imageView.image = image
-        imageView.frame.size = image.size
-        rescaleAndCenterImageInScrollView(image: image)
+        if let url = imageURL {
+            
+            UIBlockingProgressHUD.show()
+            imageView.kf.setImage(with: url, completionHandler: { [weak self] result in
+                UIBlockingProgressHUD.dismiss()
+                switch result {
+                case .success(let value):
+                    self?.imageView.image = value.image
+                    self?.imageView.frame.size = value.image.size
+                    self?.rescaleAndCenterImageInScrollView(image: value.image)
+                case .failure:
+                    // Показываем ошибку
+                    let alert = UIAlertController(
+                        title: "Ошибка",
+                        message: "Не удалось загрузить изображение.",
+                        preferredStyle: .alert
+                    )
+                    alert.addAction(UIAlertAction(title: "ОК", style: .default))
+                    self?.present(alert, animated: true)
+                }
+            })
+        }
     }
     
     @IBAction private func didTapBackButton() {

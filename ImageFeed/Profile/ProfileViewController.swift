@@ -22,16 +22,16 @@ final class ProfileViewController: UIViewController {
         setupLoginLabel()
         setupDescriptionLabel()
         
-        profileImageServiceObserver = NotificationCenter.default    // 2
+        profileImageServiceObserver = NotificationCenter.default
             .addObserver(
-                forName: ProfileImageService.didChangeNotification, // 3
-                object: nil,                                        // 4
-                queue: .main                                        // 5
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
             ) { [weak self] _ in
                 guard let self = self else { return }
-                self.updateAvatar()                                 // 6
+                self.updateAvatar()
             }
-        updateAvatar()                                              // 7
+        updateAvatar()
         
         if let profile = ProfileService.shared.profile {
             updateProfileDetails(profile: profile)
@@ -153,6 +153,25 @@ final class ProfileViewController: UIViewController {
     }
     
     @objc private func didTapExitButton() {
-        print("Exit tapped")
+        let alertController = UIAlertController(
+            title: "Выход из аккаунта",
+            message: "Точно хотите выйти?",
+            preferredStyle: .alert
+        )
+        
+        let confirmAction = UIAlertAction(title: "Выйти", style: .default) { [weak self] _ in
+            ProfileLogoutService.shared.logout()
+            
+            if let window = UIApplication.shared.windows.first {
+                window.rootViewController = SplashViewController()
+            }
+        }
+        
+        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
+        
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true)
     }
 }

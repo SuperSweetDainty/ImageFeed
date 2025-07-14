@@ -47,6 +47,9 @@
                                                     </constraints>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <state key="normal" image="Like"/>
+                                                    <connections>
+                                                        <action selector="likeButtonClicked:" destination="YMy-Z6-NJF" eventType="touchUpInside" id="EOM-Ng-HuN"/>
+                                                    </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="27 августа 2022" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nMl-Jf-hGh" userLabel="Date Label">
                                                     <rect key="frame" x="32" y="196.5" width="148.5" height="16"/>
@@ -92,7 +95,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="TabEditorialActive" id="ueK-v1-ZJf"/>
                     <connections>
-                        <outlet property="tableView" destination="ftk-gC-B5s" id="f3Y-gc-XvX"/>
+                        <outlet property="tableView" destination="ftk-gC-B5s" id="Pcp-po-kSN"/>
                         <segue destination="0Zi-rw-0Q3" kind="presentation" identifier="ShowSingleImage" id="BBZ-gH-S3B"/>
                     </connections>
                 </viewController>
@@ -213,7 +216,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="imageView" destination="4tT-j6-d3N" id="OEC-wG-H2L"/>
+                        <outlet property="imageView" destination="4tT-j6-d3N" id="Ce0-a6-PZU"/>
                         <outlet property="scrollView" destination="g37-dH-rTe" id="krY-Ma-4fa"/>
                     </connections>
                 </viewController>
