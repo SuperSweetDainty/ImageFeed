@@ -10,6 +10,12 @@ final class ProfileImageService {
     private var task: URLSessionTask?
     private let urlSession = URLSession.shared
     
+    func quit() {
+        avatarURL = nil
+        task?.cancel()
+        task = nil
+    }
+    
     private func makeProfileImageRequest(username: String) -> URLRequest? {
         guard let baseURL = URL(string: "https://api.unsplash.com"),
               let url = URL(string: "/users/\(username)", relativeTo: baseURL),
@@ -35,7 +41,7 @@ final class ProfileImageService {
         
         let task = urlSession.objectTask(for: request) { [weak self] (result: Result<UserResult, Error>) in
             DispatchQueue.main.async {
-                guard let self = self else { return }
+                guard let self else { return }
                 
                 switch result {
                 case .success(let userResult):

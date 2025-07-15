@@ -43,7 +43,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         UIBlockingProgressHUD.show()
         fetchOAuthToken(code) { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             
             UIBlockingProgressHUD.dismiss()
             

@@ -9,9 +9,15 @@ final class ProfileService {
     private let urlSession = URLSession.shared
     private var task: URLSessionTask?
     
+    func quit() {
+        profile = nil
+        task?.cancel()
+        task = nil
+    }
+    
     private func makeProfileRequest(token: String) -> URLRequest? {
         guard let url = URL(string: "https://api.unsplash.com/me") else {
-            print("[ProfileService] Invalid base URL")
+            print("[ProfileService]: Invalid base URL")
             return nil
         }
         
@@ -22,19 +28,19 @@ final class ProfileService {
     }
     
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
-        assert(Thread.isMainThread, "[ProfileService] fetchProfile must be called on main thread")
+        assert(Thread.isMainThread, "[ProfileService]: fetchProfile must be called on main thread")
         
         task?.cancel()
         
         guard let request = makeProfileRequest(token: token) else {
-            print("[ProfileService] Failed to create URLRequest")
+            print("[ProfileService]: Failed to create URLRequest")
             completion(.failure(ProfileServiceError.invalidRequest))
             return
         }
         
         let currentTask = urlSession.objectTask(for: request) { [weak self] (result: Result<ProfileResult, Error>) in
             DispatchQueue.main.async {
-                guard let self = self else { return }
+                guard let self else { return }
                 
                 switch result {
                 case .success(let profileResult):

@@ -53,15 +53,16 @@ final class SplashViewController: UIViewController {
         ProfileService.shared.fetchProfile(token) { [weak self] result in
             DispatchQueue.main.async {
                 UIBlockingProgressHUD.dismiss()
-                guard let self = self else { return }
+                guard let self else { return }
                 
                 switch result {
                 case .success(let profile):
                     ProfileImageService.shared.fetchProfileImageURL(username: profile.username) { _ in }
                     self.switchToMainScreen()
                 case .failure:
-                    // TODO: показать алерт об ошибке
-                    break
+                    let alert = UIAlertController(title: "Ошибка", message: "Не удалось загрузить профиль", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Ок", style: .default))
+                    self.present(alert, animated: true)
                 }
             }
         }

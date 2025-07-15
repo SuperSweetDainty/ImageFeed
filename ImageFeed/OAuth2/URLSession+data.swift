@@ -60,7 +60,7 @@ extension URLSession {
                 return
             }
             
-            guard let data = data else {
+            guard let data else {
                 print("[URLSession+data]: Network error received empty data for \(request.url?.absoluteString ?? "unknown URL")")
                 DispatchQueue.main.async {
                     completion(.failure(NetworkError.urlSessionError))
