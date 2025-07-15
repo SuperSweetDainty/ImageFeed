@@ -33,7 +33,6 @@ final class SingleImageViewController: UIViewController {
                     self?.imageView.frame.size = value.image.size
                     self?.rescaleAndCenterImageInScrollView(image: value.image)
                 case .failure:
-                    // Показываем ошибку
                     let alert = UIAlertController(
                         title: "Ошибка",
                         message: "Не удалось загрузить изображение.",

@@ -99,7 +99,7 @@ extension ImagesListViewController {
             with: imageURL,
             placeholder: UIImage(named: "Stub")
         ) { [weak cell] result in
-            guard let cell = cell else { return }
+            guard let cell else { return }
             switch result {
             case .success:
                 cell.cellImage.contentMode = .scaleAspectFill
@@ -152,7 +152,7 @@ extension ImagesListViewController: ImagesListCellDelegate {
             DispatchQueue.main.async {
                 UIBlockingProgressHUD.dismiss()
                 
-                guard let self = self else { return }
+                guard let self else { return }
                 
                 switch result {
                 case .success:
