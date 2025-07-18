@@ -29,8 +29,7 @@ final class SingleImageViewController: UIViewController {
                 UIBlockingProgressHUD.dismiss()
                 switch result {
                 case .success(let value):
-                    self?.imageView.image = value.image
-                    self?.imageView.frame.size = value.image.size
+                    self?.image = value.image
                     self?.rescaleAndCenterImageInScrollView(image: value.image)
                 case .failure:
                     let alert = UIAlertController(
@@ -62,22 +61,17 @@ final class SingleImageViewController: UIViewController {
         let minZoomScale = scrollView.minimumZoomScale
         let maxZoomScale = scrollView.maximumZoomScale
         view.layoutIfNeeded()
-
-        let visibleSize = scrollView.bounds.size
+        let visibleRectSize = scrollView.bounds.size
         let imageSize = image.size
-
-        let hScale = visibleSize.width / imageSize.width
-        let vScale = visibleSize.height / imageSize.height
+        let hScale = visibleRectSize.width / imageSize.width
+        let vScale = visibleRectSize.height / imageSize.height
         let scale = min(maxZoomScale, max(minZoomScale, min(hScale, vScale)))
-
         scrollView.setZoomScale(scale, animated: false)
-
-        let newImageSize = CGSize(width: imageSize.width * scale, height: imageSize.height * scale)
-
-        let x = max((visibleSize.width - newImageSize.width) / 2, 0)
-        let y = max((visibleSize.height - newImageSize.height) / 2, 0)
-
-        scrollView.contentInset = UIEdgeInsets(top: y, left: x, bottom: 0, right: 0)
+        scrollView.layoutIfNeeded()
+        let newContentSize = scrollView.contentSize
+        let x = (newContentSize.width - visibleRectSize.width) / 2
+        let y = (newContentSize.height - visibleRectSize.height) / 2
+        scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
     }
 }
 
