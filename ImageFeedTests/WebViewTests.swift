@@ -65,12 +65,12 @@ final class WebViewTests: XCTestCase {
         
         //when
         let url = authHelper.authURL()
-
+        
         guard let urlString = url?.absoluteString else {
             XCTFail("Auth URL is nil")
             return
         }
-
+        
         //then
         XCTAssertTrue(urlString.contains(configuration.authURLString))
         XCTAssertTrue(urlString.contains(configuration.accessKey))
