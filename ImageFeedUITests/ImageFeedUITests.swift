@@ -20,7 +20,7 @@ class Image_FeedUITests: XCTestCase {
         XCTAssertTrue(loginTextField.waitForExistence(timeout: 5))
         
         loginTextField.tap()
-        loginTextField.typeText("danya.laputin@mail.ru")
+        loginTextField.typeText("Логин")
         
         if app.keyboards.element.exists {
               app.toolbars.buttons["Done"].tap()
@@ -32,14 +32,13 @@ class Image_FeedUITests: XCTestCase {
         passwordTextField.tap()
         Thread.sleep(forTimeInterval: 1)
         
-        UIPasteboard.general.string = "Hokage_2004"
+        UIPasteboard.general.string = "Пароль"
         passwordTextField.doubleTap()
         
         if app.menuItems["Paste"].waitForExistence(timeout: 2) {
             app.menuItems["Paste"].tap()
         }
         
-        // Handle paste permission alert
         let allowPasteAlert = app.alerts["Allow Paste?"]
         if allowPasteAlert.waitForExistence(timeout: 2) {
             allowPasteAlert.buttons["Allow Paste"].tap()
@@ -48,7 +47,7 @@ class Image_FeedUITests: XCTestCase {
         if app.keyboards.element.exists {
             app.toolbars.buttons["Done"].tap()
         } else {
-            webView.swipeUp()  // Fallback
+            webView.swipeUp()
         }
         
         let loginButton = webView.buttons["Login"]
