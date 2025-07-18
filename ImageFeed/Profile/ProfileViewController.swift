@@ -28,12 +28,12 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
             placeholder: UIImage(named: "UserPicture"),
             options: [.processor(processor), .cacheOriginalImage]
         ) { result in
-                    switch result {
-                    case .success:
-                        print("[ProfileViewController]: Avatar uploaded successfully")
-                    case .failure(let error):
-                        print("[ProfileViewController]: Avatar loading error - \(error.localizedDescription)")
-                    }
+            switch result {
+            case .success:
+                print("[ProfileViewController]: Avatar uploaded successfully")
+            case .failure(let error):
+                print("[ProfileViewController]: Avatar loading error - \(error.localizedDescription)")
+            }
         }
     }
     
@@ -60,19 +60,6 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         present(alertController, animated: true)
     }
     
-//    func showLogoutAlert() {
-//        let alert = UIAlertController(
-//            title: "Пока, пока!",
-//            message: "Уверены что хотите выйти?",
-//            preferredStyle: .alert
-//        )
-//        alert.addAction(UIAlertAction(title: "Да", style: .default) { [weak self] _ in
-//            self?.logout()
-//        })
-//        alert.addAction(UIAlertAction(title: "Нет", style: .default))
-//        present(alert, animated: true)
-//    }
-    
     func logout() {
         ProfileLogoutService.shared.logout()
         guard let window = UIApplication.shared.windows.first else { return }
@@ -98,7 +85,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         
         presenter?.viewDidLoad()
     }
- 
+    
     private func setupProfileImage() {
         profileImage.translatesAutoresizingMaskIntoConstraints = false
         profileImage.image = UIImage(named: "UserPicture")

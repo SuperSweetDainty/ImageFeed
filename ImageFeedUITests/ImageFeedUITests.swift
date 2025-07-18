@@ -14,7 +14,6 @@ class Image_FeedUITests: XCTestCase {
         app.buttons["Authenticate"].tap()
         
         let webView = app.webViews["UnsplashWebView"]
-        
         XCTAssertTrue(webView.waitForExistence(timeout: 5))
         
         let loginTextField = webView.descendants(matching: .textField).element
@@ -22,38 +21,39 @@ class Image_FeedUITests: XCTestCase {
         
         loginTextField.tap()
         loginTextField.typeText("danya.laputin@mail.ru")
-        app.swipeDown()
-        webView.tap()
+        
+        if app.keyboards.element.exists {
+              app.toolbars.buttons["Done"].tap()
+          }
         
         let passwordTextField = webView.descendants(matching: .secureTextField).element
         XCTAssertTrue(passwordTextField.waitForExistence(timeout: 5))
         
         passwordTextField.tap()
-        Thread.sleep(forTimeInterval: 2)
+        Thread.sleep(forTimeInterval: 1)
         
         UIPasteboard.general.string = "Hokage_2004"
         passwordTextField.doubleTap()
         
-        if app.menuItems["Paste"].exists {
+        if app.menuItems["Paste"].waitForExistence(timeout: 2) {
             app.menuItems["Paste"].tap()
         }
         
-        let allowPasteAlert = app.alerts.firstMatch
+        // Handle paste permission alert
+        let allowPasteAlert = app.alerts["Allow Paste?"]
         if allowPasteAlert.waitForExistence(timeout: 2) {
-            let allowButton = allowPasteAlert.buttons["Allow Paste"]
-            if allowButton.exists {
-                allowButton.tap()
-            }
+            allowPasteAlert.buttons["Allow Paste"].tap()
         }
         
-        Thread.sleep(forTimeInterval: 2)
-        webView.swipeUp()
+        if app.keyboards.element.exists {
+            app.toolbars.buttons["Done"].tap()
+        } else {
+            webView.swipeUp()  // Fallback
+        }
         
         let loginButton = webView.buttons["Login"]
         XCTAssertTrue(loginButton.waitForExistence(timeout: 5))
         loginButton.tap()
-        
-        Thread.sleep(forTimeInterval: 5)
         
         let tablesQuery = app.tables
         let tableView = tablesQuery.firstMatch
@@ -76,7 +76,7 @@ class Image_FeedUITests: XCTestCase {
         let initialValue = likeButton.value as? String ?? "off"
         likeButton.tap()
         let newValue = likeButton.value as? String ?? "off"
-        XCTAssertNotEqual(initialValue, newValue, "Включение/выключение лайка")
+        XCTAssertNotEqual(initialValue, newValue, "Состояние лайка должно измениться")
         likeButton.tap()
         firstCell.tap()
         let image = app.scrollViews.images.element(boundBy: 0)

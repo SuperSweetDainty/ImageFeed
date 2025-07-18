@@ -1,4 +1,3 @@
-@testable import ImageFeed
 import Foundation
 
 final class ImagesListViewControllerSpy: ImagesListViewProtocol {
@@ -7,17 +6,17 @@ final class ImagesListViewControllerSpy: ImagesListViewProtocol {
     private(set) var showLikeErrorCalled = false
     private(set) var oldCount: Int?
     private(set) var newCount: Int?
-
+    
     func updateTableAnimated(oldCount: Int, newCount: Int) {
         updateTableAnimatedCalled = true
         self.oldCount = oldCount
         self.newCount = newCount
     }
-
+    
     func reloadTable() {
         reloadTableCalled = true
     }
-
+    
     func showLikeError() {
         showLikeErrorCalled = true
     }

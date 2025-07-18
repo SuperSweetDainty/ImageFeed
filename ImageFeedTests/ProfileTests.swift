@@ -22,7 +22,7 @@ final class ProfileTests: XCTestCase {
         let profileConfiguration = ProfileConfiguration()
         let testProfile = Profile(username: "username", name: "name", loginName: "@loginName", bio: "bio")
         profileConfiguration.setProfile(testProfile)
-        var presenter = ProfilePresenter(profileService: profileConfiguration)
+        let presenter = ProfilePresenter(profileService: profileConfiguration)
         viewController.presenter = presenter
         presenter.view = viewController
         
@@ -31,7 +31,7 @@ final class ProfileTests: XCTestCase {
         
         //then
         XCTAssertTrue(viewController.updateProfileDetailsCalled)
-        XCTAssertEqual(viewController.receivedName, "username")
+        XCTAssertEqual(viewController.receivedName, "name")
         XCTAssertEqual(viewController.receivedLoginName, "@loginName")
         XCTAssertEqual(viewController.receivedBio, "bio")
     }
@@ -39,7 +39,7 @@ final class ProfileTests: XCTestCase {
     func testPresenterCallsShowLogoutAlert() {
         //given
         let viewController = ProfileViewControllerSpy()
-        var presenter = ProfilePresenter()
+        let presenter = ProfilePresenter()
         viewController.presenter = presenter
         presenter.view = viewController
         

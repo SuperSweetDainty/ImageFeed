@@ -117,13 +117,8 @@ extension ImagesListViewController {
 
 extension ImagesListViewController: ImagesListViewProtocol {
     func updateTableAnimated(oldCount: Int, newCount: Int) {
-        if oldCount == newCount { return }
-
-        let indexPaths = (oldCount..<newCount).map { IndexPath(row: $0, section: 0) }
-        
-        tableView.performBatchUpdates {
-            tableView.insertRows(at: indexPaths, with: .automatic)
-        }
+        guard oldCount != newCount else { return }
+        tableView.reloadData()
     }
     
     func reloadTable() {

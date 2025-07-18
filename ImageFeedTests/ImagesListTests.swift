@@ -13,48 +13,48 @@ final class ImagesListTests: XCTestCase {
         // then
         XCTAssertTrue(presenter.viewDidLoadCalled)
     }
-        
-        func testPresenterCallsUpdateTableAnimated() {
-            // given
-            let viewController = ImagesListViewControllerSpy()
-            let presenter = ImagesListPresenter()
-            presenter.view = viewController
-            // when
-            presenter.view?.updateTableAnimated(oldCount: 0, newCount: 1)
-            // then
-            XCTAssertTrue(viewController.updateTableAnimatedCalled)
-            XCTAssertEqual(viewController.oldCount, 0)
-            XCTAssertEqual(viewController.newCount, 1)
-        }
-        
-        func testPresenterCallsReloadTable() {
-            // given
-            let viewController = ImagesListViewControllerSpy()
-            let presenter = ImagesListPresenter()
-            presenter.view = viewController
-            // when
-            presenter.view?.reloadTable()
-            // then
-            XCTAssertTrue(viewController.reloadTableCalled)
-        }
-        
-        func testPresenterCallsShowLikeError() {
-            // given
-            let viewController = ImagesListViewControllerSpy()
-            let presenter = ImagesListPresenter()
-            presenter.view = viewController
-            // when
-            presenter.view?.showLikeError()
-            // then
-            XCTAssertTrue(viewController.showLikeErrorCalled)
-        }
-        
-        func testViewControllerCallsDidTapLike() {
-            // given
-            let presenter = ImagesListPresenterSpy()
-            // when
-            presenter.didTapLike(at: 0)
-            // then
-            XCTAssertEqual(presenter.didTapLikeIndex, 0)
-        }
+    
+    func testPresenterCallsUpdateTableAnimated() {
+        // given
+        let viewController = ImagesListViewControllerSpy()
+        let presenter = ImagesListPresenter()
+        presenter.view = viewController
+        // when
+        presenter.view?.updateTableAnimated(oldCount: 0, newCount: 1)
+        // then
+        XCTAssertTrue(viewController.updateTableAnimatedCalled)
+        XCTAssertEqual(viewController.oldCount, 0)
+        XCTAssertEqual(viewController.newCount, 1)
     }
+    
+    func testPresenterCallsReloadTable() {
+        // given
+        let viewController = ImagesListViewControllerSpy()
+        let presenter = ImagesListPresenter()
+        presenter.view = viewController
+        // when
+        presenter.view?.reloadTable()
+        // then
+        XCTAssertTrue(viewController.reloadTableCalled)
+    }
+    
+    func testPresenterCallsShowLikeError() {
+        // given
+        let viewController = ImagesListViewControllerSpy()
+        let presenter = ImagesListPresenter()
+        presenter.view = viewController
+        // when
+        presenter.view?.showLikeError()
+        // then
+        XCTAssertTrue(viewController.showLikeErrorCalled)
+    }
+    
+    func testViewControllerCallsDidTapLike() {
+        // given
+        let presenter = ImagesListPresenterSpy()
+        // when
+        presenter.didTapLike(at: 0)
+        // then
+        XCTAssertEqual(presenter.didTapLikeIndex, 0)
+    }
+}

@@ -39,11 +39,11 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
     }
     
     func didLoadNewPhotos(_ newPhotos: [Photo]) {
-            let oldCount = photos.count
-            photos.append(contentsOf: newPhotos)
-            let newCount = photos.count
-            view?.updateTableAnimated(oldCount: oldCount, newCount: newCount)
-        }
+        let oldCount = photos.count
+        photos.append(contentsOf: newPhotos)
+        let newCount = photos.count
+        view?.updateTableAnimated(oldCount: oldCount, newCount: newCount)
+    }
     
     func didTapLike(at index: Int) {
         guard index < photos.count else { return }

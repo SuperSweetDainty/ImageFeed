@@ -1,5 +1,3 @@
-@testable import ImageFeed
-
 final class ImagesListPresenterSpy: ImagesListPresenterProtocol {
     var view: ImagesListViewProtocol?
     private(set) var viewDidLoadCalled = false
@@ -7,7 +5,7 @@ final class ImagesListPresenterSpy: ImagesListPresenterProtocol {
     var willDisplayIndex: Int?
     
     var photos: [Photo] = []
-
+    
     func viewDidLoad() {
         viewDidLoadCalled = true
     }
@@ -15,7 +13,7 @@ final class ImagesListPresenterSpy: ImagesListPresenterProtocol {
     func willDisplay(at index: Int) {
         willDisplayIndex = index
     }
-
+    
     func didTapLike(at index: Int) {
         didTapLikeIndex = index
     }

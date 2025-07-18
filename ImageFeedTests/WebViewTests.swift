@@ -14,7 +14,7 @@ final class WebViewTests: XCTestCase {
         _ = viewController.view
         
         //then
-        XCTAssertTrue(presenter.viewDidLoadCalled) //behaviour verification
+        XCTAssertTrue(presenter.viewDidLoadCalled)
     }
     
     func testPresenterCallsLoadRequest() {
@@ -47,12 +47,13 @@ final class WebViewTests: XCTestCase {
     
     func testProgressHiddenWhenOne() {
         //given
-        let authHelper = AuthHelper() //Dummy
-        let presenter = WebViewPresenter(authHelper: authHelper)
+        let authHelper = AuthHelper()
         let progress: Float = 1.0
+        let presenter = WebViewPresenter(authHelper: authHelper)
+ 
         
         //when
-        let shouldHideProgress = presenter.shouldHideProgress(for: progress) // return value verification
+        let shouldHideProgress = presenter.shouldHideProgress(for: progress)
         
         //then
         XCTAssertTrue(shouldHideProgress)
@@ -67,7 +68,7 @@ final class WebViewTests: XCTestCase {
         let url = authHelper.authURL()
         
         guard let urlString = url?.absoluteString else {
-            XCTFail("Auth URL is nil")
+            XCTFail("Auth URL Error")
             return
         }
         
@@ -81,10 +82,10 @@ final class WebViewTests: XCTestCase {
     
     func testCodeFromURL() {
         //given
+        let authHelper = AuthHelper()
         var urlComponents = URLComponents(string: "https://unsplash.com/oauth/authorize/native")!
         urlComponents.queryItems = [URLQueryItem(name: "code", value: "test code")]
         let url = urlComponents.url!
-        let authHelper = AuthHelper()
         
         //when
         let code = authHelper.code(from: url)
