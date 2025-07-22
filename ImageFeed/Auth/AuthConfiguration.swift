@@ -7,8 +7,12 @@ enum Constants {
     static let accessScope = "public+read_user+write_likes"
     static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
     static let defaultBaseURL: URL = {
-        guard let url = URL(string: "https://api.unsplash.com/") else {
-            fatalError("Failed to create default base URL")
+        let urlString = "https://api.unsplash.com/"
+        guard let url = URL(string: urlString) else {
+            // Логируем ошибку в DEBUG
+            assertionFailure("Invalid URL string: \(urlString)")
+            // В релизе упадёт только если URL сломан (что невозможно для hardcoded-строки)
+            preconditionFailure("Critical: Invalid hardcoded URL - fix Constants.defaultBaseURL")
         }
         return url
     }()
