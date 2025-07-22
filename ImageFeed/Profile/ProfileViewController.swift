@@ -1,15 +1,76 @@
 import UIKit
 import Kingfisher
 
-final class ProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
+    private var presenter: ProfilePresenterProtocol?
     
-    private var profileImageServiceObserver: NSObjectProtocol?
+    func configure<T: ProfilePresenterProtocol>(_ presenter: inout T) {
+        self.presenter = presenter
+        presenter.view = self
+    }
     
     private let profileImage = UIImageView()
     private let nameLabel = UILabel()
     private let loginLabel = UILabel()
     private let descriptionLabel = UILabel()
     private let exitButton = UIButton(type: .system)
+    func updateProfileDetails(name: String, loginName: String, bio: String) {
+        nameLabel.text = name
+        loginLabel.text = loginName
+        descriptionLabel.text = bio
+    }
+    
+    func updateAvatar(with url: URL) {
+        let processor = RoundCornerImageProcessor(cornerRadius: 35)
+        profileImage.kf.indicatorType = .activity
+        profileImage.kf.setImage(
+            with: url,
+            placeholder: UIImage(named: "UserPicture"),
+            options: [.processor(processor), .cacheOriginalImage]
+        ) { result in
+            switch result {
+            case .success:
+                print("[ProfileViewController]: Avatar uploaded successfully")
+            case .failure(let error):
+                print("[ProfileViewController]: Avatar loading error - \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    func showLogoutAlert() {
+        let alertController = UIAlertController(
+            title: "Выход из аккаунта",
+            message: "Точно хотите выйти?",
+            preferredStyle: .alert
+        )
+        
+        let confirmAction = UIAlertAction(title: "Выйти", style: .default) { [weak self] _ in
+            ProfileLogoutService.shared.logout()
+            
+            if let window = UIApplication.shared.windows.first {
+                window.rootViewController = SplashViewController()
+            }
+        }
+        
+        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
+        
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true)
+    }
+    
+    func logout() {
+        ProfileLogoutService.shared.logout()
+        guard let window = UIApplication.shared.windows.first else { return }
+        let splashVC = SplashViewController()
+        window.rootViewController = splashVC
+    }
+    
+    @objc
+    func didTapExitButton() {
+        presenter?.didTapExitButton()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,58 +83,7 @@ final class ProfileViewController: UIViewController {
         setupLoginLabel()
         setupDescriptionLabel()
         
-        profileImageServiceObserver = NotificationCenter.default
-            .addObserver(
-                forName: ProfileImageService.didChangeNotification,
-                object: nil,
-                queue: .main
-            ) { [weak self] _ in
-                guard let self else { return }
-                self.updateAvatar()
-            }
-        updateAvatar()
-        
-        if let profile = ProfileService.shared.profile {
-            updateProfileDetails(profile: profile)
-        } else {
-            print("[ProfileViewController]: Profile not found")
-        }
-    }
-    
-    private func updateAvatar() {
-        guard
-            let profileImageURL = ProfileImageService.shared.avatarURL,
-            let url = URL(string: profileImageURL)
-        else {
-            print("[ProfileViewController]: Error: Invalid avatar URL")
-            return
-        }
-        
-        let processor = RoundCornerImageProcessor(cornerRadius: 35)
-        
-        profileImage.kf.indicatorType = .activity
-        profileImage.kf.setImage(
-            with: url,
-            placeholder: UIImage(named: "UserPicture"),
-            options: [
-                .processor(processor),
-                .cacheOriginalImage
-            ]) { result in
-                switch result {
-                case .success:
-                    print("[ProfileViewController]: Avatar uploaded successfully")
-                case .failure(let error):
-                    print("[ProfileViewController]: Avatar loading error - \(error.localizedDescription)")
-                }
-            }
-    }
-    
-    
-    
-    private func updateProfileDetails(profile: Profile) {
-        nameLabel.text = profile.name
-        loginLabel.text = profile.loginName
-        descriptionLabel.text = profile.bio
+        presenter?.viewDidLoad()
     }
     
     private func setupProfileImage() {
@@ -98,6 +108,7 @@ final class ProfileViewController: UIViewController {
         let image = UIImage(named: "Exit")?.withRenderingMode(.alwaysOriginal)
         exitButton.setImage(image, for: .normal)
         exitButton.addTarget(self, action: #selector(didTapExitButton), for: .touchUpInside)
+        exitButton.accessibilityIdentifier = "exitButton"
         view.addSubview(exitButton)
         
         NSLayoutConstraint.activate([
@@ -114,6 +125,7 @@ final class ProfileViewController: UIViewController {
         nameLabel.textColor = .white
         nameLabel.numberOfLines = 1
         nameLabel.text = "Екатерина Новикова"
+        nameLabel.accessibilityIdentifier = "userNameLabel"
         view.addSubview(nameLabel)
         
         NSLayoutConstraint.activate([
@@ -128,6 +140,7 @@ final class ProfileViewController: UIViewController {
         loginLabel.font = UIFont.systemFont(ofSize: 13)
         loginLabel.textColor = .gray
         loginLabel.text = "@ekaterina_nov"
+        loginLabel.accessibilityIdentifier = "userLoginLabel"
         view.addSubview(loginLabel)
         
         NSLayoutConstraint.activate([
@@ -150,28 +163,5 @@ final class ProfileViewController: UIViewController {
             descriptionLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             descriptionLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
         ])
-    }
-    
-    @objc private func didTapExitButton() {
-        let alertController = UIAlertController(
-            title: "Выход из аккаунта",
-            message: "Точно хотите выйти?",
-            preferredStyle: .alert
-        )
-        
-        let confirmAction = UIAlertAction(title: "Выйти", style: .default) { [weak self] _ in
-            ProfileLogoutService.shared.logout()
-            
-            if let window = UIApplication.shared.windows.first {
-                window.rootViewController = SplashViewController()
-            }
-        }
-        
-        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
-        
-        alertController.addAction(confirmAction)
-        alertController.addAction(cancelAction)
-        
-        present(alertController, animated: true)
     }
 }
