@@ -126,3 +126,9 @@
     2. Если пользователь нажимает «Нет», то он возвращается на экран профиля;
     3. Если алерт не настроен, то при нажатии на кнопку выходы ничего не происходит, пользователь не может разлогиниться;
 3. Пользователь может переключаться между экранами ленты и профиля с помощью таб бара.
+<img width="259" height="779" alt="Снимок экрана 2025-07-16 в 14 23 15" src="https://github.com/user-attachments/assets/cd35d106-a876-4f98-931c-f7145ad3957c" />
+<img width="259" height="779" alt="Снимок экрана 2025-07-16 в 14 23 15" src="https://github.com/user-attachments/assets/35cfaa7e-f6dc-4a57-8a6b-74d0e6b9ff52" />
+<img width="259" height="779" alt="Снимок экрана 2025-07-16 в 14 23 15" src="https://github.com/user-attachments/assets/3f136325-a242-4c12-a436-7385458b0fd9" />
+<img width="259" height="779" alt="Снимок экрана 2025-07-16 в 14 23 15" src="https://github.com/user-attachments/assets/23ebc137-e846-4daa-86ce-4ff18e979606" />
+<img width="259" height="779" alt="Снимок экрана 2025-07-16 в 14 23 15" src="https://github.com/user-attachments/assets/db0f8a1c-bae6-4b95-93b4-672bd88c9726" />
+<img width="259" height="779" alt="Снимок экрана 2025-07-16 в 14 23 15" src="https://github.com/user-attachments/assets/cb0f4e54-f72e-46a0-befb-01fe8098e629" />
